@@ -1,0 +1,24 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 100px);
+  grid-gap: 10px;
+  margin: 20px;
+}
+.cell {
+  width: 100px;
+  height: 100px;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+}
+.player {
+  background-color: red;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+#dice-result, #game-status {
+  margin-top: 20px;
+}
