@@ -4,7 +4,7 @@ const gameStatus = document.getElementById("game-status");
 const rollDiceButton = document.getElementById("roll-dice");
 
 let playerPosition = 0;
-const boardSize = 25;
+const boardSize = 27;
 const player = document.createElement("div");
 player.className = "player";
 let gameRunning = true;
@@ -39,12 +39,23 @@ const cards = [
 ];
 
 function createBoard() {
-  for (let i = 0; i < boardSize; i++) {
+  const startCell = document.createElement("div");
+  startCell.className = "cell";
+  startCell.innerText = "Início";
+  board.appendChild(startCell);
+
+  for (let i = 1; i <= 25; i++) {
     const cell = document.createElement("div");
     cell.className = "cell";
-    cell.innerText = i + 1;
+    cell.innerText = i;
     board.appendChild(cell);
   }
+
+  const endCell = document.createElement("div");
+  endCell.className = "cell";
+  endCell.innerText = "Fim";
+  board.appendChild(endCell);
+
   board.children[0].appendChild(player);
 }
 

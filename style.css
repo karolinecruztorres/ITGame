@@ -1,17 +1,30 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #eee;
+}
+
+h1 {
+  text-align: center;
+  margin: 45px 0;
+}
+
 .board {
   display: grid;
-  grid-template-columns: repeat(5, 100px);
-  grid-gap: 10px;
+  grid-template-columns: repeat(9, 120px);
+  grid-row-gap: 60px;
   margin: 20px;
+  justify-content: center;
 }
 .cell {
-  width: 100px;
-  height: 100px;
-  background-color: lightgray;
+  width: 120px;
+  height: 120px;
+  background-color: #f9c80e;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
+  border: 1px solid rgb(255, 255, 255);
+  color: white;
+  font-size: 1.5rem;
 }
 .player {
   background-color: red;
@@ -19,6 +32,21 @@
   width: 40px;
   height: 40px;
 }
-#dice-result, #game-status {
-  margin-top: 20px;
+
+#roll-dice,
+#dice-result,
+#game-status {
+  margin: 20px 0 0 80px;
+}
+
+.cell:first-child {
+  background-color: #43bccd;
+  font-weight: bold;
+  border-radius: 50px 0 0 50px;
+}
+
+.cell:last-child {
+  background-color: #662e9b;
+  font-weight: bold;
+  border-radius: 0 50px 50px 0;
 }
