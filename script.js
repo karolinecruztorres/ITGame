@@ -3,11 +3,18 @@ const diceResult = document.getElementById("dice-result");
 const gameStatus = document.getElementById("game-status");
 const rollDiceButton = document.getElementById("roll-dice");
 
-let playerPosition = 0;
 const boardSize = 27;
-const player = document.createElement("div");
-player.className = "player";
 let gameRunning = true;
+let currentPlayer = 0;
+const totalPlayers = 4;
+let playerPositions = [0, 0, 0, 0];
+const players = [];
+
+for (let i = 0; i < totalPlayers; i++) {
+  const player = document.createElement("div");
+  player.className = `player player-${i + 1}`;
+  players.push(player);
+}
 
 const cards = [
   {
@@ -56,7 +63,9 @@ function createBoard() {
   endCell.innerText = "Fim";
   board.appendChild(endCell);
 
-  board.children[0].appendChild(player);
+  for (let i = 0; i < totalPlayers; i++) {
+    board.children[0].appendChild(players[i]);
+  }
 }
 
 function rollDice() {
@@ -64,13 +73,23 @@ function rollDice() {
 }
 
 function movePlayer(spaces) {
-  const newPosition = Math.min(playerPosition + spaces, boardSize - 1);
-  board.children[playerPosition].removeChild(player);
-  playerPosition = newPosition;
-  board.children[playerPosition].appendChild(player);
+  const newPosition = Math.min(
+    playerPositions[currentPlayer] + spaces,
+    boardSize - 1
+  );
 
-  if (playerPosition === boardSize - 1) {
-    gameStatus.innerText = "Parabéns! Você venceu o jogo!";
+  board.children[playerPositions[currentPlayer]].removeChild(
+    players[currentPlayer]
+  );
+
+  playerPositions[currentPlayer] = newPosition;
+
+  board.children[newPosition].appendChild(players[currentPlayer]);
+
+  if (playerPositions[currentPlayer] === boardSize - 1) {
+    gameStatus.innerText = `Parabéns! Jogador ${
+      currentPlayer + 1
+    } venceu o jogo!`;
     gameRunning = false;
     rollDiceButton.disabled = true;
   } else {
@@ -80,11 +99,13 @@ function movePlayer(spaces) {
 
 function drawCard() {
   const card = cards[Math.floor(Math.random() * cards.length)];
-  gameStatus.innerText = card.text;
+  gameStatus.innerText = `Jogador ${currentPlayer + 1}: ${card.text}`;
 
-  playerPosition = card.action(playerPosition);
+  playerPositions[currentPlayer] = card.action(playerPositions[currentPlayer]);
 
-  board.children[playerPosition].appendChild(player);
+  board.children[playerPositions[currentPlayer]].appendChild(
+    players[currentPlayer]
+  );
 
   if (card.skipTurn) {
     rollDiceButton.disabled = true;
@@ -92,9 +113,16 @@ function drawCard() {
       rollDiceButton.disabled = false;
       gameStatus.innerText = "Sua vez de jogar novamente!";
     }, 2000);
-  } else if (card.reroll) {
+  } else if (!card.reroll) {
+    nextPlayer();
+  } else {
     gameStatus.innerText += " Role o dado novamente!";
   }
+}
+
+function nextPlayer() {
+  currentPlayer = (currentPlayer + 1) % totalPlayers;
+  gameStatus.innerText = `Vez do Jogador ${currentPlayer + 1}`;
 }
 
 rollDiceButton.addEventListener("click", () => {
