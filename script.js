@@ -1,7 +1,7 @@
 const board = document.getElementById("board");
+const dice = document.getElementById("dice");
 const diceResult = document.getElementById("dice-result");
 const gameStatus = document.getElementById("game-status");
-const rollDiceButton = document.getElementById("roll-dice");
 
 const boardSize = 27;
 let gameRunning = true;
@@ -68,8 +68,19 @@ function createBoard() {
   }
 }
 
+const diceImages = [
+  "images/dice1.png",
+  "images/dice2.png",
+  "images/dice3.png",
+  "images/dice4.png",
+  "images/dice5.png",
+  "images/dice6.png",
+];
+
 function rollDice() {
-  return Math.floor(Math.random() * 6) + 1;
+  const result = Math.floor(Math.random() * 6) + 1;
+  dice.src = diceImages[result - 1];
+  return result;
 }
 
 function movePlayer(spaces) {
@@ -91,7 +102,6 @@ function movePlayer(spaces) {
       currentPlayer + 1
     } venceu o jogo!`;
     gameRunning = false;
-    rollDiceButton.disabled = true;
   } else {
     drawCard();
   }
@@ -108,11 +118,10 @@ function drawCard() {
   );
 
   if (card.skipTurn) {
-    rollDiceButton.disabled = true;
     setTimeout(() => {
-      rollDiceButton.disabled = false;
+      nextPlayer();
       gameStatus.innerText = "Sua vez de jogar novamente!";
-    }, 2000);
+    }, 3000);
   } else if (!card.reroll) {
     nextPlayer();
   } else {
@@ -125,12 +134,10 @@ function nextPlayer() {
   gameStatus.innerText = `Vez do Jogador ${currentPlayer + 1}`;
 }
 
-rollDiceButton.addEventListener("click", () => {
+dice.addEventListener("click", () => {
   if (!gameRunning) return;
-
-  const dice = rollDice();
-  diceResult.innerText = `Você rolou: ${dice}`;
-  movePlayer(dice);
+  const diceRoll = rollDice();
+  movePlayer(diceRoll);
 });
 
 createBoard();

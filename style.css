@@ -106,8 +106,20 @@ h1 {
   }
 }
 
-#roll-dice,
+#dice-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#dice {
+  width: 80px;
+  height: 80px;
+}
+
 #dice-result,
 #game-status {
-  margin: 20px 0 0 140px;
+  margin: 20px;
+  text-align: center;
+  font-size: 1.5rem;
 }
